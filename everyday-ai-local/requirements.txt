@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+numpy
+pyarrow
+sentence-transformers
+transformers
+# torch is assumed to be installed already (your CUDA build is fine)

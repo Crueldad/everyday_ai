@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Everyday AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F4EE;--surface:#FFFFFF;--ink:#1B1F1D;--muted:#5E6762;--line:#E2DFD4;--accent:#0B6E5E;--accent-ink:#FFFFFF;--accent-soft:#DCEFEA;--warm:#F3B71C;--warm-soft:#FCF0CC;--bad:#B3261E;--bad-soft:#F9DEDC;--radius:14px;
+--display:'Bricolage Grotesque',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#141815;--surface:#1D221F;--ink:#ECEFEA;--muted:#9AA5A0;--line:#2D3531;--accent:#4FC3AB;--accent-ink:#0C1512;--accent-soft:#1B3A33;--warm:#F3B71C;--warm-soft:#3A3217;--bad:#F2B8B5;--bad-soft:#4A2421}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 64px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:18px 0 10px}
+.brand{font:700 22px var(--display);display:flex;align-items:center;gap:8px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--warm);box-shadow:0 0 0 4px var(--accent-soft)}
+.who{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+select,input[type=text],textarea{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px;width:100%}
+.who select{width:auto;min-width:180px;color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+nav{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:22px}
+nav button{background:none;border:0;padding:11px 14px;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;font-weight:500}
+nav button[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:5px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.muted{color:var(--muted)}.small{font-size:13px}
+.mono{font-family:var(--mono);font-size:13px}
+.hero{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end;margin-bottom:18px}
+.hero h2{font-size:30px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 14px}
+.stat b{font:700 22px var(--display);display:block}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.chip.how{background:var(--accent-soft)}.chip.where{background:var(--warm-soft);color:var(--ink)}
+.chip.avoid{background:var(--bad-soft);color:var(--bad)}.chip.off_limits{background:var(--bad-soft);color:var(--bad)}
+.chip.plain{background:var(--line);color:var(--muted)}
+.rule{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+.rule:first-of-type{border-top:0}
+.rule .t{flex:1}
+.rule .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
+.room h3{font-size:18px;margin-bottom:6px}
+.search{display:flex;gap:8px;margin-bottom:6px}
+.search input{font-size:17px;padding:12px 14px}
+.demo{overflow:hidden;padding:0}
+.demo .pic{aspect-ratio:16/10;background:var(--accent-soft);display:block;width:100%;object-fit:cover}
+.demo .b{padding:12px 14px}
+.demo h4{margin:0 0 4px;font:600 16px var(--display)}
+.tag{font-size:12px;color:var(--muted)}
+.notice{background:var(--warm-soft);border-radius:10px;padding:10px 14px;font-size:14px}
+.empty{text-align:center;padding:36px 16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:140px}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:16px;text-align:center}
+.drop img,.drop video{max-width:100%;max-height:220px;border-radius:8px;margin-top:8px}
+.er{display:grid;grid-template-columns:110px 1fr 28px;gap:8px;margin-bottom:8px}
+.col h3{font-size:17px;margin-bottom:8px}
+.step{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line)}
+.step:first-of-type{border-top:0}
+.step .n{font:600 12px var(--mono);color:var(--muted);width:20px;padding-top:3px}
+.step .t{flex:1}
+.instr{background:var(--ink);color:var(--bg);border-radius:12px;padding:14px;font-family:var(--mono);font-size:13px;white-space:pre-wrap}
+.blocked{background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:12px;font-weight:600;margin-bottom:10px}
+.fix{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;margin:6px 0}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.tabs button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 10px;cursor:pointer;font:500 13px var(--mono)}
+.tabs button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+pre.file{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;max-height:420px;font:12.5px/1.5 var(--mono);margin:0;white-space:pre-wrap;word-break:break-word}
+.chk{display:flex;gap:8px;padding:5px 0}
+.chk i{font-style:normal;font-weight:700;width:18px}
+.chk.ok i{color:var(--accent)}.chk.warn i{color:var(--bad)}.chk.info i{color:var(--muted)}
+.status{font-size:12px;color:var(--muted);margin:-14px 0 16px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:9;max-width:90vw}
+.toast.err{background:var(--bad);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="dot"></span>Everyday AI</div>
+    <div class="who"><label for="hsel">Home</label><select id="hsel"></select></div>
+  </header>
+  <div class="status" id="status" title=""></div>
+  <nav id="nav"></nav>
+  <main id="app"></main>
+</div>
+<div id="toast" class="toast" hidden></div>
+<script>
+(function(){
+'use strict';
+var S={houses:[],status:{},hid:'okafor',view:'home',q:'',search:null,teach:null,attempt:null,fix:null,cmp:{task:'Laundry',loc:''},exp:{tab:'README.txt',data:null,checks:null},busy:false};
+var VIEWS=[['home','Home'],['teach','Teach'],['try','Try it'],['compare','Compare homes'],['export','Robot export']];
+var KIND={how:'How',where:'Where',avoid:'Never',off_limits:'Off-limits'};
+var COLORS={Laundry:'#7FB7A8',Dishes:'#E9C46A',Doors:'#A9B8D6',Cleaning:'#B6D3A8',Tidying:'#E3B7A0'};
+var app=document.getElementById('app');
+function $(s){return document.querySelector(s)}
+function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function toast(m,err){var t=$('#toast');t.textContent=m;t.className='toast'+(err?' err':'');t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(function(){t.hidden=true},3800)}
+function api(path,opt){
+  return fetch(path,opt).then(function(r){
+    return r.json().catch(function(){return {}}).then(function(j){
+      if(!r.ok){var d=j.detail;throw new Error(typeof d==='string'?d:'Something went wrong.')}
+      return j;
+    });
+  });
+}
+function post(path,body){return api(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})}
+function house(){return S.houses.filter(function(h){return h.id===S.hid})[0]||S.houses[0]}
+function isMine(){return S.hid==='mine'}
+function opts(list,sel,blank){return (blank?'<option value="">'+esc(blank)+'</option>':'')+list.map(function(x){return '<option'+(x===sel?' selected':'')+'>'+esc(x)+'</option>'}).join('')}
+function scene(d){
+  var c=COLORS[d.task]||'#BBD';
+  return '<svg class="pic" viewBox="0 0 160 100" role="img" aria-label="Placeholder frame"><rect width="160" height="100" fill="'+c+'"/><rect y="68" width="160" height="32" fill="rgba(0,0,0,.12)"/><circle cx="80" cy="42" r="16" fill="rgba(255,255,255,.55)"/><text x="80" y="90" text-anchor="middle" font-size="7" fill="#1B1F1D" font-family="sans-serif">'+esc(d.location)+' · '+esc(d.task)+' (placeholder frame)</text></svg>';
+}
+function media(d){
+  if(d.url&&d.kind==='video')return '<video class="pic" src="'+esc(d.url)+'" controls preload="metadata"></video>';
+  if(d.url)return '<img class="pic" src="'+esc(d.url)+'" alt="'+esc(d.title)+'">';
+  return scene(d);
+}
+
+/* ---------- loading ---------- */
+function load(){
+  return api('/api/state').then(function(j){
+    S.houses=j.houses||j.households;S.status=j.status;
+    if(!house())S.hid='okafor';
+    renderStatus();
+  });
+}
+function renderStatus(){
+  var s=S.status,el=$('#status'),parts=[];
+  parts.push(s.embed==='ready'?'Meaning-based search is on':s.embed==='loading'?'Loading the search model…':'Keyword search (search model not loaded)');
+  parts.push(s.llm==='ready'?'language model ready':s.llm==='loading'?'loading the language model…':'template mode (no language model)');
+  el.textContent=parts.join(' · ');
+  el.title=[s.embed_error,s.llm_error].filter(Boolean).join('\n');
+}
+function pollStatus(){
+  api('/api/status').then(function(s){S.status=s;renderStatus()}).catch(function(){});
+}
+
+/* ---------- chrome ---------- */
+function renderChrome(){
+  $('#hsel').innerHTML=S.houses.map(function(h){return '<option value="'+esc(h.id)+'"'+(h.id===S.hid?' selected':'')+'>'+esc(h.name)+(h.sample?' (sample)':'')+'</option>'}).join('');
+  $('#nav').innerHTML=VIEWS.map(function(v){return '<button data-act="nav" data-v="'+v[0]+'"'+(S.view===v[0]?' aria-current="page"':'')+'>'+v[1]+'</button>'}).join('');
+}
+function render(){
+  renderChrome();
+  var fn={home:vHome,teach:vTeach,'try':vTry,compare:vCompare,'export':vExport}[S.view]||vHome;
+  app.innerHTML=fn();
+  if(S.view==='compare'&&!S.cmp.data)runCompare();
+  if(S.view==='export'&&!S.exp.data)loadExport();
+}
+
+/* ---------- Home ---------- */
+function ruleRow(r,del){
+  return '<div class="rule"><span class="chip '+r.kind+'">'+KIND[r.kind]+'</span><div class="t">'+esc(r.text)+(r.task?'<div class="tag">'+esc(r.task)+(r.location?' · '+esc(r.location):'')+'</div>':'')+(r.why?'<div class="tag">Matched: '+esc(r.why)+'</div>':'')+'</div>'+(del?'<button class="x" data-act="delrule" data-id="'+r.id+'" aria-label="Delete rule">×</button>':'')+'</div>';
+}
+function vHome(){
+  var h=house(),rules=h.rules,mine=isMine();
+  var out='<div class="hero"><div><h2>'+esc(h.name)+'</h2><p class="muted" style="margin:6px 0 0;max-width:560px">'+esc(h.description)+'</p></div>'+
+    '<div class="stats"><div class="stat"><b>'+rules.length+'</b>rules</div><div class="stat"><b>'+h.demos.length+'</b>demos</div><div class="stat"><b>'+h.corrections+'</b>corrections</div></div></div>';
+  if(!rules.length){
+    return out+'<div class="card empty"><h3>Nothing taught yet</h3><p class="muted">Show a chore with a photo or short video and a sentence about how you like it done. The app turns it into rules a robot can follow.</p><button class="btn" data-act="nav" data-v="teach">Teach your first thing</button> <button class="btn ghost" data-act="home" data-id="okafor">See a sample home</button></div>';
+  }
+  if(!mine)out+='<div class="notice" style="margin-bottom:14px">This is a sample home and is read-only. Switch to <b>My home</b> to build your own.</div>';
+  out+='<div class="search"><input type="text" id="q" placeholder="Ask this home: how do they fold towels? what is off-limits?" value="'+esc(S.q)+'" aria-label="Ask this home"></div><div id="results">'+resultsHtml()+'</div>';
+  return out;
+}
+function resultsHtml(){
+  var h=house(),mine=isMine();
+  if(S.q.trim()&&S.search&&S.search.q===S.q){
+    var rel=S.search.results.filter(function(r){return r.relevant});
+    var p=S.search.parsed||{};
+    var s='<p class="muted small">'+(rel.length?rel.length+' matching rule'+(rel.length>1?'s':''):'No matching rules')+' · searched by '+esc(S.search.mode)+(p.task||p.location?' · read as '+esc([p.task,p.location].filter(Boolean).join(' in ')):'')+'</p>';
+    return s+'<div class="card">'+(rel.length?rel.map(function(r){return ruleRow(r,mine)}).join(''):'<span class="muted">Nothing in this home covers that yet.</span>')+'</div>';
+  }
+  var rooms=['Kitchen','Bedroom','Bathroom','Living room','Hallway'];
+  var html='<div class="grid g2">';
+  rooms.forEach(function(room){
+    var rr=h.rules.filter(function(r){return r.location===room});
+    if(!rr.length)return;
+    html+='<div class="card room"><h3>'+esc(room)+'</h3>'+rr.map(function(r){return ruleRow(r,mine)}).join('')+'</div>';
+  });
+  html+='</div>';
+  if(h.demos.length){
+    html+='<h3 style="margin:26px 0 12px">Demos</h3><div class="grid g3">'+h.demos.map(function(d){
+      return '<div class="card demo">'+media(d)+'<div class="b"><h4>'+esc(d.title)+'</h4><div class="tag">'+esc(d.task)+' · '+esc(d.location)+(d.dur?' · '+Math.round(d.dur)+'s':'')+'</div>'+(d.note?'<p class="small muted" style="margin:6px 0 0">'+esc(d.note)+'</p>':'')+(mine?'<button class="btn ghost small" style="margin-top:8px" data-act="deldemo" data-id="'+d.id+'">Delete</button>':'')+'</div></div>';
+    }).join('')+'</div>';
+  }
+  return html;
+}
+var searchTimer;
+function doSearch(){
+  var q=S.q;
+  if(!q.trim()){S.search=null;$('#results').innerHTML=resultsHtml();return}
+  api('/api/search?household='+encodeURIComponent(S.hid)+'&q='+encodeURIComponent(q)).then(function(j){
+    if(q!==S.q)return;S.search=j;$('#results').innerHTML=resultsHtml();
+  }).catch(function(e){toast(e.message,true)});
+}
+
+/* ---------- Teach ---------- */
+function T(){return S.teach||(S.teach={title:'',note:'',task:'Laundry',loc:'Kitchen',rules:null,by:'',file:null,preview:null,rec:false})}
+function vTeach(){
+  var t=T();
+  var out='<div class="hero"><div><h2>Teach a preference</h2><p class="muted" style="margin:6px 0 0;max-width:560px">Show a chore, say how you like it done, then check the rules the app writes down. Everything you save goes to <b>My home</b>.</p></div></div>';
+  out+='<div class="grid g2"><div class="card">';
+  out+='<div class="field"><label>Photo or video (optional)</label><div class="drop"><input type="file" id="file" accept="image/*,video/*"> <label class="small muted" style="display:block;margin-top:6px"><input type="file" id="cam" accept="video/*,image/*" capture="environment" style="display:none"><span class="btn ghost small" data-act="cam">Record on this device</span></label>'+(t.preview?t.preview:'')+'</div></div>';
+  out+='<div class="field"><label for="t-title">Title</label><input type="text" id="t-title" data-f="title" maxlength="80" placeholder="Folding the bath towels" value="'+esc(t.title)+'"></div>';
+  out+='<div class="row field"><div><label for="t-task">Chore</label><select id="t-task" data-f="task">'+opts(S.status.tasks||[],t.task)+'</select></div><div><label for="t-loc">Room</label><select id="t-loc" data-f="loc">'+opts(S.status.locations||[],t.loc)+'</select></div></div>';
+  out+='<div class="field"><label for="t-note">Say how you like it done</label><textarea id="t-note" data-f="note" rows="4" maxlength="800" placeholder="Fold towels in thirds, edge facing out. Stack them on the second shelf. Never hang the wool sweaters.">'+esc(t.note)+'</textarea></div>';
+  out+='<button class="btn" data-act="extract"'+(S.busy?' disabled':'')+'>'+(S.busy?'Working…':'Suggest rules')+'</button></div>';
+  out+='<div class="card"><h3 style="margin-bottom:8px">Rules</h3>';
+  if(!t.rules){out+='<p class="muted">Press <b>Suggest rules</b>. You can edit or remove any rule before saving.</p>'}
+  else{
+    out+='<p class="muted small">Written by '+esc(t.by)+'. Edit anything that is not quite right.</p>';
+    out+=t.rules.map(function(r,i){return '<div class="er"><select data-rf="kind" data-i="'+i+'" aria-label="Kind">'+['how','where','avoid','off_limits'].map(function(k){return '<option value="'+k+'"'+(k===r.kind?' selected':'')+'>'+KIND[k]+'</option>'}).join('')+'</select><input type="text" data-rf="text" data-i="'+i+'" value="'+esc(r.text)+'" aria-label="Rule text"><button class="x" style="background:none;border:0;cursor:pointer;font-size:18px" data-act="rmrule" data-i="'+i+'" aria-label="Remove">×</button></div>'}).join('');
+    out+='<button class="btn ghost small" data-act="addrule">+ Add a rule</button> <button class="btn" data-act="save" style="margin-left:8px"'+(S.busy?' disabled':'')+'>Save to My home</button>';
+  }
+  return out+'</div></div>';
+}
+function extract(){
+  var t=T();
+  if(!t.note.trim()){toast('Write a sentence about how you like it done first.',true);return}
+  S.busy=true;render();
+  post('/api/extract',{note:t.note,task:t.task,location:t.loc,title:t.title}).then(function(j){
+    t.rules=j.rules;t.by=j.by;
+  }).catch(function(e){toast(e.message,true)}).then(function(){S.busy=false;render()});
+}
+function saveDemo(){
+  var t=T();
+  if(!t.title.trim()){toast('Give it a title.',true);return}
+  var rules=t.rules.filter(function(r){return r.text.trim()});
+  if(!rules.length){toast('Add at least one rule.',true);return}
+  var fd=new FormData();
+  fd.append('title',t.title);fd.append('note',t.note);fd.append('task',t.task);fd.append('location',t.loc);
+  fd.append('rules',JSON.stringify(rules.map(function(r){return {kind:r.kind,text:r.text,task:t.task,location:t.loc}})));
+  if(t.file)fd.append('file',t.file);
+  S.busy=true;render();
+  api('/api/demos',{method:'POST',body:fd}).then(function(j){
+    S.teach=null;toast('Saved '+j.rules+' rule'+(j.rules>1?'s':'')+' to My home.');
+    return load().then(function(){S.hid='mine';S.view='home';S.q='';S.search=null;S.exp.data=null;S.cmp.data=null});
+  }).catch(function(e){toast(e.message,true)}).then(function(){S.busy=false;render()});
+}
+
+/* ---------- Try it ---------- */
+function vTry(){
+  var h=house(),a=S.attempt;
+  var out='<div class="hero"><div><h2>Try it</h2><p class="muted" style="margin:6px 0 0;max-width:600px">Give the robot a chore and see how it would go about it, with and without <b>'+esc(h.name)+'</b>\'s profile. This is a simulated plan, not a real robot.</p></div></div>';
+  out+='<div class="card" style="margin-bottom:16px"><div class="row" style="align-items:flex-end"><div style="flex:2"><label class="small" for="chore" style="font-weight:600">Chore</label><input type="text" id="chore" placeholder="Put away the clean towels" value="'+esc(a?a.chore:'')+'"></div><div><label class="small" for="room" style="font-weight:600">Room</label><select id="room">'+opts(S.status.locations||[],a&&a.location,'Auto')+'</select></div><div style="flex:0 0 auto"><button class="btn" data-act="run">Run</button></div></div><p class="small muted" style="margin:8px 0 0">Try: “put away the towels”, “load the dishwasher”, “close the door”, “wipe the counter”.</p></div>';
+  if(!a)return out;
+  if(a.blocked)out+='<div class="blocked">'+esc(a.blocked)+' The robot will not start.</div>';
+  out+='<div class="grid g2"><div class="card col"><h3>A general robot</h3><p class="small muted">No knowledge of this home.</p>'+a.baseline.map(function(s,i){return '<div class="step"><span class="n">'+(i+1)+'</span><span class="t">'+esc(s)+'</span></div>'}).join('')+'</div>';
+  out+='<div class="card col"><h3>With '+esc(house().name)+'\'s profile</h3>';
+  if(!a.known)out+='<p class="small muted">This home has no how-to rules for that chore yet, so the plan stays generic.</p>';
+  out+=a.steps.map(function(s,i){
+    var fixBtn=s.rule_id?'<button class="btn ghost small" data-act="fix" data-rid="'+s.rule_id+'" data-i="'+i+'">That’s not right</button>':'';
+    var f=S.fix&&S.fix.i===i?fixHtml():'';
+    return '<div class="step"><span class="n">'+(i+1)+'</span><span class="t">'+(s.kind?'<span class="chip '+s.kind+'">'+KIND[s.kind]+'</span> ':'')+esc(s.text)+f+'</span>'+fixBtn+'</div>';
+  }).join('');
+  if(a.constraints.length)out+='<div style="margin-top:10px"><b class="small">Constraints</b>'+a.constraints.map(function(c){return '<div class="step"><span class="t"><span class="chip '+c.kind+'">'+KIND[c.kind]+'</span> '+esc(c.text)+'</span></div>'}).join('')+'</div>';
+  out+='<div style="margin-top:10px"><button class="btn ghost small" data-act="fix" data-rid="" data-i="new">Teach something this plan missed</button>'+(S.fix&&S.fix.i==='new'?fixHtml():'')+'</div>';
+  out+='</div></div>';
+  out+='<h3 style="margin:22px 0 8px;font-size:17px">Instruction this home would send the robot</h3><div class="instr">'+esc(a.instruction)+'</div><p class="small muted">Composed by templates from the rules above. This is the same text that goes into the export.</p>';
+  return out;
+}
+function fixHtml(){
+  var f=S.fix;
+  if(!isMine())return '<div class="fix small">Sample homes are read-only. <a href="#" data-act="home" data-id="mine">Switch to My home</a> and add some rules to try corrections.</div>';
+  var h='<div class="fix"><label class="small" style="font-weight:600" for="fb">What should the robot do instead?</label><textarea id="fb" rows="2" placeholder="Fold them in half, not thirds, and keep the label inside">'+esc(f.feedback)+'</textarea>';
+  if(f.proposal==null)h+='<button class="btn small" style="margin-top:6px" data-act="propose">Suggest a corrected rule</button>';
+  else h+='<label class="small" style="font-weight:600;display:block;margin-top:8px" for="prop">Corrected rule ('+esc(f.by)+')</label><input type="text" id="prop" value="'+esc(f.proposal)+'"><button class="btn small" style="margin-top:6px" data-act="apply">Save correction</button>';
+  return h+' <button class="btn ghost small" style="margin-top:6px" data-act="cancelfix">Cancel</button></div>';
+}
+function runAttempt(){
+  var chore=$('#chore').value.trim(),room=$('#room').value;
+  if(!chore){toast('Type a chore first.',true);return}
+  post('/api/attempt',{household_id:S.hid,chore:chore,location:room||null}).then(function(j){S.attempt=j;S.fix=null;render()}).catch(function(e){toast(e.message,true)});
+}
+
+/* ---------- Compare ---------- */
+function vCompare(){
+  var c=S.cmp;
+  var out='<div class="hero"><div><h2>Compare homes</h2><p class="muted" style="margin:6px 0 0;max-width:560px">Same chore, different homes. This is why one robot setting does not fit everyone.</p></div></div>';
+  out+='<div class="row" style="margin-bottom:14px;max-width:460px"><div><label class="small" style="font-weight:600" for="c-task">Chore</label><select id="c-task">'+opts(S.status.tasks||[],c.task)+'</select></div><div><label class="small" style="font-weight:600" for="c-loc">Room</label><select id="c-loc">'+opts(S.status.locations||[],c.loc,'Any')+'</select></div></div>';
+  if(!c.data)return out+'<p class="muted">Loading…</p>';
+  out+='<div class="grid g3">'+c.data.map(function(h){
+    return '<div class="card"><h3 style="margin-bottom:8px">'+esc(h.name)+'</h3>'+(h.rules.length||h.off_limits.length?h.rules.concat(h.off_limits).map(function(r){return ruleRow(r,false)}).join(''):'<p class="muted small">No rules for this yet.</p>')+'<div class="instr" style="margin-top:10px;font-size:12px">'+esc(h.instruction)+'</div></div>';
+  }).join('')+'</div>';
+  return out;
+}
+function runCompare(){
+  api('/api/compare?task='+encodeURIComponent(S.cmp.task)+(S.cmp.loc?'&location='+encodeURIComponent(S.cmp.loc):'')).then(function(j){S.cmp.data=j;if(S.view==='compare')render()}).catch(function(e){toast(e.message,true)});
+}
+
+/* ---------- Export ---------- */
+function vExport(){
+  var e=S.exp,h=house();
+  var out='<div class="hero"><div><h2>Robot export</h2><p class="muted" style="margin:6px 0 0;max-width:620px">A bundle for <b>'+esc(h.name)+'</b> laid out like a LeRobot v3 dataset: language instructions in <span class="mono">meta/tasks.parquet</span>, dataset info in <span class="mono">meta/info.json</span>, demo clips alongside, plus the full profile and constraints.</p></div><a class="btn" href="/api/export/'+encodeURIComponent(S.hid)+'.zip" download>Download .zip</a></div>';
+  out+='<div class="notice" style="margin-bottom:14px"><b>What this is not:</b> a complete training dataset. It has no <span class="mono">observation.state</span> or <span class="mono">action</span> frames; those come from the robot’s own recordings. It carries the home’s instructions and rules to use alongside them.</div>';
+  if(!e.data)return out+'<p class="muted">Building preview…</p>';
+  out+='<div class="tabs">'+e.data.files.map(function(f){return '<button data-act="tab" data-p="'+esc(f.path)+'" aria-pressed="'+(f.path===e.tab)+'">'+esc(f.path)+'</button>'}).join('')+'</div>';
+  var cur=e.data.files.filter(function(f){return f.path===e.tab})[0]||e.data.files[0];
+  out+='<pre class="file">'+esc(cur.text||'(empty)')+'</pre>';
+  out+='<p class="small muted">'+e.data.tasks+' instruction(s) · '+e.data.clips.length+' clip file(s) · tasks written as '+(e.data.parquet?'tasks.parquet':'tasks.jsonl (install pyarrow for parquet)')+'</p>';
+  out+='<div class="card" style="margin-top:14px"><button class="btn ghost small" data-act="validate">Check this bundle</button>';
+  if(e.checks)out+='<div style="margin-top:8px">'+e.checks.map(function(c){return '<div class="chk '+c.status+'"><i>'+(c.status==='ok'?'✓':c.status==='warn'?'!':'i')+'</i><span>'+esc(c.text)+'</span></div>'}).join('')+'</div><p class="small muted">These checks run on our own bundle only. They do not test it inside a robot training pipeline.</p>';
+  return out+'</div>';
+}
+function loadExport(){
+  api('/api/export/'+encodeURIComponent(S.hid)+'/preview').then(function(j){S.exp.data=j;if(S.exp.tab==null||!j.files.some(function(f){return f.path===S.exp.tab}))S.exp.tab=j.files[0].path;if(S.view==='export')render()}).catch(function(e){toast(e.message,true)});
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',function(ev){
+  var el=ev.target.closest('[data-act]');if(!el)return;
+  var act=el.dataset.act,t=T();
+  if(el.tagName==='A')ev.preventDefault();
+  if(act==='nav'){S.view=el.dataset.v;render()}
+  else if(act==='home'){S.hid=el.dataset.id;S.q='';S.search=null;S.view='home';S.exp.data=null;render()}
+  else if(act==='cam'){$('#cam').click()}
+  else if(act==='extract')extract();
+  else if(act==='save')saveDemo();
+  else if(act==='rmrule'){t.rules.splice(+el.dataset.i,1);render()}
+  else if(act==='addrule'){t.rules.push({kind:'how',text:''});render();}
+  else if(act==='delrule'){api('/api/rules/'+el.dataset.id,{method:'DELETE'}).then(function(){return load()}).then(function(){S.exp.data=null;S.cmp.data=null;S.search=null;if(S.q)doSearch();render()}).catch(function(e){toast(e.message,true)})}
+  else if(act==='deldemo'){if(confirm('Delete this demo and its rules?'))api('/api/demos/'+el.dataset.id,{method:'DELETE'}).then(function(){return load()}).then(function(){S.exp.data=null;S.cmp.data=null;render()}).catch(function(e){toast(e.message,true)})}
+  else if(act==='run')runAttempt();
+  else if(act==='fix'){S.fix={rid:el.dataset.rid||null,i:el.dataset.i==='new'?'new':+el.dataset.i,feedback:'',proposal:null,by:''};render()}
+  else if(act==='cancelfix'){S.fix=null;render()}
+  else if(act==='propose'){
+    var fb=$('#fb').value;S.fix.feedback=fb;
+    post('/api/correct/propose',{household_id:S.hid,rule_id:S.fix.rid,feedback:fb}).then(function(j){S.fix.proposal=j.text;S.fix.by=j.by;render()}).catch(function(e){toast(e.message,true)});
+  }
+  else if(act==='apply'){
+    var a=S.attempt,f=S.fix;
+    post('/api/correct/apply',{household_id:S.hid,rule_id:f.rid,text:$('#prop').value,feedback:f.feedback,attempt:a.instruction,task:a.task,location:a.location,kind:'how'}).then(function(){
+      toast('Saved. The profile now includes your correction.');S.fix=null;S.exp.data=null;S.cmp.data=null;
+      return load();
+    }).then(function(){return post('/api/attempt',{household_id:S.hid,chore:S.attempt.chore,location:S.attempt.location})}).then(function(j){S.attempt=j;render()}).catch(function(e){toast(e.message,true)});
+  }
+  else if(act==='tab'){S.exp.tab=el.dataset.p;render()}
+  else if(act==='validate'){api('/api/export/'+encodeURIComponent(S.hid)+'/validate').then(function(j){S.exp.checks=j.checks;render()}).catch(function(e){toast(e.message,true)})}
+});
+document.addEventListener('change',function(ev){
+  var el=ev.target;
+  if(el.id==='hsel'){S.hid=el.value;S.q='';S.search=null;S.attempt=null;S.fix=null;S.exp.data=null;S.exp.checks=null;render();return}
+  if(el.id==='file'||el.id==='cam'){
+    var f=el.files&&el.files[0];if(!f)return;var t=T();t.file=f;
+    var u=URL.createObjectURL(f);
+    t.preview=f.type.indexOf('video')===0?'<video src="'+u+'" controls></video>':'<img src="'+u+'" alt="Preview">';
+    if(!t.title)t.title=f.name.replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').slice(0,80);
+    render();return;
+  }
+  if(el.dataset.f){T()[el.dataset.f]=el.value;return}
+  if(el.dataset.rf){T().rules[+el.dataset.i][el.dataset.rf]=el.value;return}
+  if(el.id==='c-task'){S.cmp.task=el.value;S.cmp.data=null;render()}
+  if(el.id==='c-loc'){S.cmp.loc=el.value;S.cmp.data=null;render()}
+});
+document.addEventListener('input',function(ev){
+  var el=ev.target;
+  if(el.id==='q'){S.q=el.value;clearTimeout(searchTimer);searchTimer=setTimeout(doSearch,250);return}
+  if(el.dataset.f){T()[el.dataset.f]=el.value;return}
+  if(el.dataset.rf){T().rules[+el.dataset.i][el.dataset.rf]=el.value}
+});
+document.addEventListener('keydown',function(ev){
+  if(ev.key==='Enter'&&ev.target.id==='chore'){ev.preventDefault();runAttempt()}
+});
+
+load().then(function(){render();setInterval(function(){if(S.status.embed==='loading'||S.status.llm==='loading')pollStatus()},4000)}).catch(function(e){app.innerHTML='<div class="card empty"><h3>Can’t reach the server</h3><p class="muted">'+esc(e.message)+' Start it with <span class="mono">python server.py</span> and reload.</p></div>'});
+})();
+</script>
+</body>
+</html>
